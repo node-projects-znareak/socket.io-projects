@@ -20,7 +20,7 @@ let users = [];
 function sendInfoCount() {
   for (const _socket of sockets) {
     _socket.emit("users_count", count);
-    _socket.emit("users_connected", JSON.stringify({ users }));
+    _socket.emit("users_connected", JSON.stringify(users));
   }
 }
 
@@ -30,12 +30,14 @@ io.on("connection", (socket) => {
   count++;
 
   socket.on("user_connect", (user) => {
-    users.push({
-      ...user,
-      id: socket.id,
-    });
+    if (user.name !== null) {
+      users.push({
+        ...user,
+        id: socket.id,
+      });
 
-    sendInfoCount();
+      sendInfoCount();
+    }
   });
 
   socket.on("disconnect", () => {
