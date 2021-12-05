@@ -5,6 +5,10 @@
   color: rgba(0, 0, 0, 0.801);
 }
 
+body {
+  cursor: none;
+}
+
 #light {
   display: block;
   width: 50px;

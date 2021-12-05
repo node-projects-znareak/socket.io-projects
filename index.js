@@ -24,6 +24,12 @@ function sendInfoCount() {
   }
 }
 
+function sendInfoMouseCoords(mouseCoords) {
+  for (const _socket of sockets) {
+    _socket.emit("mouse_coords_moved", JSON.stringify(mouseCoords));
+  }
+}
+
 io.on("connection", (socket) => {
   sockets.push(socket);
   let trigger = 1;
@@ -44,8 +50,12 @@ io.on("connection", (socket) => {
     count--;
     users = users.filter((user) => user.id !== socket.id);
     sockets = sockets.filter((_socket) => _socket.id !== socket.id);
-    console.log(users.find((user) => user.id === socket.id));
     sendInfoCount();
+  });
+
+  socket.on("mouse_coords", (coords) => {
+    sendInfoMouseCoords(coords);
+    console.log(coords);
   });
 
   setInterval(() => {
