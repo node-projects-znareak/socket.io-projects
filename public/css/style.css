@@ -32,7 +32,6 @@ a {
 }
 
 .container {
-  width: 90%;
   margin: auto;
   padding: 2rem 15px;
 }
@@ -52,7 +51,7 @@ a {
   height: 475px;
   overflow: hidden;
   bottom: 15px;
-  left: 10px;
+  left: 15px;
   cursor: text !important;
   z-index: 500;
   padding: 10px;
