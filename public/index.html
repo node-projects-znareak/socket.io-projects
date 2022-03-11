@@ -3,11 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <link href="https://css.gg/user.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/utils.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
       rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
     />
 
     <!-- CSS Reset -->
@@ -17,21 +27,27 @@
     />
 
     <title>Socket.io simple chat</title>
-    
   </head>
   <body>
     <div class="container">
-      <h5>Conectado como: <span id="user_name"></span></h5>
+      <ul id="users_online_list"></ul>
 
-      <div class="online-users" title="Usuarios online">
-        <i class="gg-user"></i>
-        <span id="users_count">?</span>
+      <div class="chat">
+        <div class="chat-content"></div>
+        <div class="chat-textbox">
+          <input type="text" placeholder="Write your message!" />
+          <button>Send</button>
+        </div>
       </div>
 
-      <img src="./img/off.png" id="light" />
-      <ul id="users_online_list"></ul>
+      <h1 class="title">Online chat battle</h1>
+      <p>Ping: <span id="ping">?</span>ms</p>
+      <p class="mt-1">Conectado como: <span id="user_name"></span></p>
+
+      <button class="mt-2">Crear cuenta</button>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-    <script src="main.js"></script>
+    <script src="socket.io.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>
