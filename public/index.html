@@ -33,14 +33,15 @@
       <ul id="users_online_list"></ul>
 
       <div class="chat">
-        <div class="chat-content"></div>
+        <div class="chat-content" id="chat-display"></div>
         <div class="chat-textbox">
-          <input type="text" placeholder="Write your message!" />
-          <button>Send</button>
+          <input type="text" placeholder="Write your message!" id="chat-text" />
+          <button id="send-chat">Send</button>
         </div>
+        <small id="users-writting" class="mt-1"></small>
       </div>
 
-      <h1 class="title">Online chat battle</h1>
+      <h1 class="title">Online Socket.io</h1>
       <p>Ping: <span id="ping">?</span>ms</p>
       <p class="mt-1">Conectado como: <span id="user_name"></span></p>
 

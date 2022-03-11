@@ -11,12 +11,54 @@ const token = localStorage.getItem("token") || null;
 const socket = io({ query: "token=" + "45646" });
 const user_name = getId("user_name");
 const name = getUsername();
+const chatText = getId("chat-text");
+const chatDisplay = getId("chat-display");
+const btnSendChat = getId("send-chat");
+const usersWritting = getId("users-writting");
+let timer = null;
+
 user_name.innerHTML = name;
 
 function handleErrors(err) {
   document.write(err);
-  console.log(err.name)
+  console.log(err.name);
 }
+
+const scrollToBottom = (node) => {
+  node.scroll({
+    top: node.scrollHeight - node.clientHeight + 10,
+    behavior: "smooth",
+  });
+};
+
+function sendMessage() {
+  const msj = {
+    content: chatText.value.trim(),
+    user: name,
+  };
+  if (msj.content.length > 0) {
+    socket.emit("send_message", msj);
+    chatText.value = "";
+    scrollToBottom(chatDisplay);
+  }
+}
+
+function sendUserWritting() {
+  socket.emit("user_writting", name);
+}
+
+btnSendChat.addEventListener("click", sendMessage);
+chatText.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
+
+chatText.addEventListener("input", (e) => {
+  sendUserWritting();
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    socket.emit("user_stop_writting", name);
+  }, 1300);
+});
 
 socket.on("connect_error", handleErrors);
 socket.on("connect_failed", handleErrors);
@@ -64,6 +106,31 @@ socket.on("user_disconnected", (data) => {
   displayUsers(users);
 });
 
+// Incoming messages in the chat
+socket.on("new_messages", (data) => {
+  const isSelf = data.user === name;
+  const className = `mb-1 chat-message${isSelf ? " me" : ""}`;
+
+  chatDisplay.innerHTML += /*html*/ `
+    <p class="${className}">
+      <b class="chat-user">${data.user}</b>: ${data.content}
+    </p>
+  `;
+  console.log(data);
+});
+
+socket.on("user_is_writting", (users) => {
+  const len = users.length;
+  if (len > 0) {
+    const text =
+      len > 3
+        ? "varias personas están escribiendo"
+        : `${users.join(", ")} está escribiendo...`;
+    usersWritting.textContent = text;
+  } else {
+    usersWritting.textContent = "";
+  }
+});
 
 setInterval(() => {
   const start = Date.now();

@@ -20,6 +20,7 @@ app.use(express.static("public"));
 const sockets = new Set();
 let count = 0;
 let users = {};
+const currentUsersWritting = new Set();
 
 function sendSockectDisconnect(socket) {
   const data = {
@@ -50,6 +51,18 @@ function sendInfoMouseCoords(socket, mouseCoords) {
   }
 }
 
+function sendAllMessages(data) {
+  for (const _socket of sockets) {
+    _socket.emit("new_messages", data);
+  }
+}
+
+function sendUserWrittingNotification(user) {
+  for (const _socket of sockets) {
+    _socket.emit("user_is_writting", [...currentUsersWritting]);
+  }
+}
+
 io.use(function (socket, next) {
   if (socket.handshake.query && socket.handshake.query.token) {
     next();
@@ -63,7 +76,7 @@ io.use(function (socket, next) {
     //   }
     // );
   } else {
-    const authError = new Error({name:"Authentication error token"});
+    const authError = new Error({ name: "Authentication error token" });
     authError.name = "AuthenticationError";
     next(authError);
   }
@@ -102,6 +115,22 @@ io.on("connection", (socket) => {
 
   socket.on("mouse_coords", (coords) => {
     sendInfoMouseCoords(socket, coords);
+  });
+
+  socket.on("send_message", (data) => {
+    sendAllMessages(data);
+  });
+
+  socket.on("user_writting", (user) => {
+    currentUsersWritting.add(user);
+    sendUserWrittingNotification(user);
+    console.log("El usuario: " + user + " comenzo a escribir");
+  });
+
+  socket.on("user_stop_writting", (user) => {
+    console.log("El usuario: " + user + " dejo de escribir");
+    currentUsersWritting.delete(user);
+    sendUserWrittingNotification(user);
   });
 });
 

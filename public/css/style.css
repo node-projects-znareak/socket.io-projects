@@ -3,11 +3,13 @@
   margin: 0;
   padding: 0;
   cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjbQg61aAAAADUlEQVQYV2P4//8/IwAI/QL/+TZZdwAAAABJRU5ErkJggg==");
+  box-sizing: border-box;
 }
 
 html {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -47,9 +49,9 @@ a {
 .chat {
   position: absolute;
   width: 400px;
-  height: 400px;
+  height: 475px;
   overflow: hidden;
-  bottom: 10px;
+  bottom: 15px;
   left: 10px;
   cursor: text !important;
   z-index: 500;
@@ -57,11 +59,13 @@ a {
 }
 
 .chat .chat-content {
-  height: 355px;
+  height: 385px;
   overflow-y: auto;
   background-color: #0c151c67;
   margin-bottom: 3px;
   border-radius: 5px;
+  font-size: 12px;
+  padding: 0.8rem;
 }
 
 .chat .chat-textbox {
@@ -69,10 +73,29 @@ a {
   justify-content: space-between;
 }
 
+.chat .chat-message {
+  padding: 5px;
+  border-radius: 4px;
+  width: max-content;
+  max-width: 100%;
+}
+
+.chat .chat-message .chat-user {
+  letter-spacing: 0.5px;
+}
+
+.chat .chat-message.me {
+  background-color: #2e404e65;
+}
+
 .chat .chat-textbox input {
   display: block;
   width: 100%;
   margin-right: 5px;
+}
+
+.chat #users-writting {
+  display: block;
 }
 
 #users_online_list {
@@ -83,6 +106,16 @@ a {
   padding: 1rem;
   border-radius: 5px;
   background-color: #0c151c86;
+}
+
+#users_online_list li:not(:first-child) {
+  padding: 5px 10px;
+  border-radius: 3px;
+  background-color: #2e404e65;
+}
+
+#users_online_list li:not(:last-child):not(.title-online-users) {
+  margin-bottom: 6px;
 }
 
 #users_online_list li:not(:first-child):before {
